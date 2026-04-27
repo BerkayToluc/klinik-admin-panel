@@ -1,26 +1,39 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-sage-100: #E8ECE6;
+  --color-sage-500: #849A80;
+  --color-sage-700: #5C7058;
+  --color-sand-50: #FAF9F7;
+  --color-sand-100: #F5F3EE;
+  --color-sand-500: #E3DFD5;
+  --color-ink-light: #5A6058;
+  --color-ink-dark: #2C332A;
+}/* Yazı Seçim Rengi (Selection) */
+::selection {
+  background-color: #7c9082; /* Sage-500 */
+  color: white;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Scrollbar Tasarımı (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+::-webkit-scrollbar-track {
+  background: #fdfaf7; /* Sand-50 */
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+::-webkit-scrollbar-thumb {
+  background: #7c9082; /* Sage-500 */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5e6f63; /* Sage-700 */
+}
+
+/* Yumuşak Sayfa Geçişleri */
+html {
+  scroll-behavior: smooth;
 }

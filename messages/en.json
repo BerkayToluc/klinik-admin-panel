@@ -1,0 +1,99 @@
+{
+  "Navbar": {
+    "about": "About",
+    "services": "Services",
+    "scales": "Scales",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "book": "Book Session"
+  },
+  "Hero": {
+    "badge": "Clinical Psychologist & Psychotherapist",
+    "title1": "A Safe Space For",
+    "title2": "Your Inner Journey",
+    "description": "Hello, I am Clinical Psychologist Gökçe Toluç Saklı. I offer evidence-based online psychotherapy to adults, children, and adolescents globally from the US.",
+    "btnBook": "Book Session",
+    "btnAbout": "About Me"
+  },
+  "About": {
+    "titlePrefix": "Hello, I'm",
+    "p1": "As an adult, child, and adolescent therapist, I graduated with honors in Psychology from Beykent University and completed my Master's in Clinical Psychology at Istanbul Gelişim University.",
+    "p2": "I gained extensive clinical experience at Bakırköy Mazhar Osman Psychiatric Hospital and Beylikdüzü State Hospital. After working in private clinics and serving 4 years at Çatalca Municipality, I relocated to the US.",
+    "p3": "Using Cognitive Behavioral Therapy (CBT), certified by Prof. Dr. Ebru Şalcıoğlu, I now provide online therapy globally. I also presented my thesis at the 12th International Paris Congress on Social Sciences and Humanities.",
+    "card1Title": "Clinical Experience",
+    "card1Desc": "Years of public and private clinical experience, including Bakırköy Mazhar Osman Psychiatric Hospital and Çatalca Municipality.",
+    "card2Title": "Academic Background",
+    "card2Desc": "Honors degree, Master's in Clinical Psychology, and certified expertise in Cognitive Behavioral Therapy (CBT).",
+    "card3Title": "Comprehensive Care",
+    "card3Desc": "Online therapy accessible from anywhere in the world, dedicated to adults, children, and adolescents."
+  },
+  "Services": {
+    "title": "Services & Expertise",
+    "description": "My primary areas of expertise include anxiety, social phobia, depression, OCD, trauma, and relationship dynamics.",
+    "s1Title": "Adult Therapy",
+    "s1Desc": "Professional support in individual processes using CBT-focused approaches to overcome emotional and cognitive challenges.",
+    "s2Title": "Child & Adolescent Therapy",
+    "s2Desc": "Development-oriented therapy support for the emotional processes of children and youth, including family participation.",
+    "s3Title": "Couples Therapy",
+    "s3Desc": "Guidance service for communication issues in relationships, trust building, and healthy bonding processes.",
+    "s4Title": "Online Therapy",
+    "s4Desc": "The opportunity to attend uninterrupted professional therapy sessions from your own safe space, globally from the US."
+  },
+  "FAQ": {
+    "title": "Frequently Asked Questions",
+    "description": "Here you can find answers to basic questions about the therapy process.",
+    "q1": "How long do the sessions last?",
+    "a1": "Our individual therapy sessions standardly last for 50 minutes.",
+    "q2": "Is online therapy as effective as in-person therapy?",
+    "a2": "Yes, scientific research shows that online therapy is as effective as in-person therapy in many cases.",
+    "q3": "How long should I continue therapy?",
+    "a3": "The therapy process varies completely based on individual needs.",
+    "q4": "How does the privacy policy work?",
+    "a4": "Due to ethical rules, all information you share is kept strictly confidential."
+  },
+  "Quote": {
+    "text": "The courage to meet your own darkness in a safe space is where healing begins.",
+    "author": "Gökçe Toluç Saklı, MSc"
+  },
+  "Gallery": {
+    "title": "Trainings & Workshops",
+    "description": "Corporate trainings and workshops focused on experience sharing.",
+    "g1Title": "Seminars & Presentations",
+    "g1Desc": "Awareness seminars for corporate teams.",
+    "g2Title": "Team Work",
+    "g2Desc": "Group dynamics workshops for synergy.",
+    "g3Title": "Training Programs",
+    "g3Desc": "Specialty-focused certified training programs.",
+    "g4Title": "Professional Development",
+    "g4Desc": "Continuous education sharing.",
+    "g5Title": "Trainings and Seminars",
+    "g5Desc": "Interactive presentations organized for institutions and groups to support community mental health and share clinical experiences."
+  },
+  "Contact": {
+    "title": "Contact & Booking",
+    "description": "You can reach out to me for questions.",
+    "infoTitle": "Contact Information",
+    "phone": "Phone",
+    "email": "Email",
+    "location": "Location",
+    "locationDesc1": "Online Therapy (Global)",
+    "locationDesc2": "US & Turkey Focused",
+    "instagram": "Psychologist Gökçe Toluç",
+    "linkedin": "Clinical Psychologist / HR Expert",
+    "calendarTitle": "Appointment Calendar",
+    "calendarDesc": "Schedule our session by choosing the most suitable time.",
+    "calendarPlaceholder": "Loading Calendar...",
+    "calendarPlaceholderDesc": "Your Calendly link will be embedded here.",
+    "kvkkCheck": "I have read and agree to the Privacy Policy.",
+    "kvkkRequiredTitle": "Approval Required",
+    "kvkkRequiredDesc": "Please check the box above to accept the privacy policy and view the calendar."
+  },
+  "Footer": {
+    "slogan": "Clinical Psychologist & Psychotherapist.",
+    "quickLinks": "Quick Links",
+    "connect": "My Social Media",
+    "copyright": "Clinical Psychologist Gökçe Toluç Saklı. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  }
+}

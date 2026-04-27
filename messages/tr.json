@@ -1,0 +1,99 @@
+{
+  "Navbar": {
+    "about": "Hakkımda",
+    "services": "Hizmetler",
+    "scales": "Ölçekler",
+    "contact": "İletişim",
+    "faq": "SSS",
+    "book": "Randevu Al"
+  },
+  "Hero": {
+    "badge": "Klinik Psikolog & Psikoterapist",
+    "title1": "İçsel Yolculuğunuzda",
+    "title2": "Güvenli Bir Alan",
+    "description": "Merhaba, ben Klinik Psikolog Gökçe Toluç Saklı. Yetişkin, çocuk ve ergen danışanlarıma Amerika'dan online olarak kanıta dayalı ve şefkatli psikoterapi desteği sunuyorum.",
+    "btnBook": "Randevu Al",
+    "btnAbout": "Hakkımda"
+  },
+  "About": {
+    "titlePrefix": "Merhaba, Ben",
+    "p1": "Yetişkin, çocuk ve ergen terapisti olarak görev yapmaktayım. 2014 yılında Beykent Üniversitesi Psikoloji bölümünden onur derecesiyle mezun olduktan sonra, İstanbul Gelişim Üniversitesi'nde Klinik Psikoloji yüksek lisansımı tamamlayarak uzmanlığımı aldım.",
+    "p2": "Eğitimim süresince Bakırköy Mazhar Osman ve Beylikdüzü Devlet Hastanesi psikiyatri servislerinde klinik deneyim kazandım. Çeşitli kurumlarda çocuk ve aile psikoloğu olarak çalıştıktan sonra, Çatalca Belediyesi'nde 4 yıl Klinik Psikolog olarak görev yaptım.",
+    "p3": "Bilişsel Davranışçı Terapi (BDT) uzmanlığımın yanı sıra, 2022 yılında Bahçeşehir Üniversitesi İnsan Kaynakları Uzmanlığı ve 2023 yılında İstanbul Üniversitesi Sanat Terapisi eğitimlerimi tamamlayarak klinik pratiğimi zenginleştirdim. Şu anda Amerika'dan tüm dünyadaki danışanlarıma online terapi sunuyorum.",
+    "card1Title": "Klinik Deneyim",
+    "card1Desc": "Bakırköy Mazhar Osman Hastanesi, Devlet Hastanesi ve Çatalca Belediyesi'ni kapsayan yıllara dayanan klinik tecrübe.",
+    "card2Title": "Akademik Altyapı",
+    "card2Desc": "Onur dereceli lisans, Klinik Psikoloji yüksek lisansı, BDT uzmanlığı ve İstanbul Üniversitesi Sanat Terapisi eğitimi.",
+    "card3Title": "Kapsamlı Hizmet",
+    "card3Desc": "Yetişkin, çocuk ve ergen danışanlara yönelik, Amerika'dan tüm dünyaya kesintisiz online terapi imkanı."
+},
+  "Services": {
+    "title": "Hizmetler & Uzmanlık Alanları",
+    "description": "Kaygı bozuklukları, sosyal fobi, depresyon, OKB, travma ve ilişki dinamikleri başlıca uzmanlık alanlarımı oluşturmaktadır.",
+    "s1Title": "Yetişkin Terapisi",
+    "s1Desc": "Bireysel süreçlerde, Bilişsel Davranışçı Terapi odaklı yaklaşımlarla duygusal ve düşünsel zorlukların aşılmasına yönelik profesyonel destek.",
+    "s2Title": "Çocuk ve Ergen Terapisi",
+    "s2Desc": "Çocuk ve gençlerin duygusal gelişim süreçlerinde, aile katılımını da kapsayan gelişim odaklı terapi desteği.",
+    "s3Title": "Çift Terapisi",
+    "s3Desc": "İlişkilerdeki iletişim problemleri, güven inşası ve sağlıklı bağ kurma süreçlerine yönelik rehberlik hizmeti.",
+    "s4Title": "Online Terapi",
+    "s4Desc": "Amerika'dan tüm dünyaya, kendi güvenli alanınızdan kesintisiz ve profesyonel terapi seanslarına katılım imkanı."
+  },
+  "FAQ": {
+    "title": "Sıkça Sorulan Sorular",
+    "description": "Terapi süreciyle ilgili merak edilen temel soruların yanıtlarını burada bulabilirsiniz.",
+    "q1": "Seanslar ne kadar sürüyor?",
+    "a1": "Bireysel terapi seanslarımız standart olarak 50 dakika sürmektedir.",
+    "q2": "Online terapi, yüz yüze terapi kadar etkili mi?",
+    "a2": "Evet, bilimsel araştırmalar online terapinin birçok durumda yüz yüze terapi kadar etkili olduğunu göstermektedir. Önemli olan güvenli ve kesintisiz bir ortam sağlanmasıdır.",
+    "q3": "Terapiye ne kadar süre devam etmeliyim?",
+    "a3": "Terapi süreci tamamen kişisel ihtiyaçlara ve çalışılan konuya göre değişir. Bu süreci ilk seanslarımızda birlikte planlıyoruz.",
+    "q4": "Gizlilik politikası nasıl işliyor?",
+    "a4": "Etik kurallar gereği paylaştığınız tüm bilgiler tamamen gizli tutulur. Danışan gizliliği, terapi sürecinin en temel kuralıdır."
+  },
+  "Quote": {
+    "text": "Kendi karanlığınızla güvenli bir alanda tanışma cesareti, iyileşmenin başladığı yerdir.",
+    "author": "Klnk. Psk. Gökçe Toluç Saklı"
+  },
+  "Gallery": {
+    "title": "Eğitim ve Atölye Çalışmaları",
+    "description": "Bilgi ve deneyim paylaşımı odaklı kurumsal eğitimler ve atölye çalışmaları.",
+    "g1Title": "Seminer & Sunumlar",
+    "g1Desc": "Kurumsal ekiplere yönelik farkındalık seminerleri.",
+    "g2Title": "Ekip Çalışmaları",
+    "g2Desc": "Sinerji odaklı grup dinamikleri atölyeleri.",
+    "g3Title": "Eğitim Programları",
+    "g3Desc": "Uzmanlık odaklı sertifikalı eğitimler.",
+    "g4Title": "Mesleki Gelişim",
+    "g4Desc": "Sürekli eğitim odaklı paylaşımlar.",
+    "g5Title": "Eğitim ve Seminerler",
+    "g5Desc": "Toplum ruh sağlığını desteklemek ve klinik tecrübeleri paylaşmak amacıyla kurumlara ve gruplara yönelik düzenlenen interaktif sunum çalışmaları."
+  },
+  "Contact": {
+    "title": "İletişim & Randevu",
+    "description": "Sorularınız için bana ulaşabilirsiniz.",
+    "infoTitle": "İletişim Bilgileri",
+    "phone": "Telefon",
+    "email": "E-posta",
+    "location": "Lokasyon",
+    "locationDesc1": "Online Terapi (Global)",
+    "locationDesc2": "ABD & Türkiye Odaklı",
+    "instagram": "Psikolog Gökçe Toluç",
+    "linkedin": "Uzm. Klnk. Psk. / İK Uzmanı",
+    "calendarTitle": "Randevu Takvimi",
+    "calendarDesc": "Size en uygun zamanı seçerek görüşmemizi planlayabilirsiniz.",
+    "calendarPlaceholder": "Takvim Yükleniyor...",
+    "calendarPlaceholderDesc": "Calendly bağlantınız buraya gömülecek.",
+    "kvkkCheck": "'ni okudum, anladım ve kişisel verilerimin işlenmesini kabul ediyorum.",
+    "kvkkRequiredTitle": "Onay Gerekiyor",
+    "kvkkRequiredDesc": "Takvimi görüntülemek için lütfen yukarıdaki KVKK metnini onaylayın."
+  },
+  "Footer": {
+    "slogan": "Klinik Psikolog & Psikoterapist.",
+    "quickLinks": "Hızlı Linkler",
+    "connect": "Sosyal Medyalarım",
+    "copyright": "Klnk. Psk. Gökçe Toluç Saklı. Tüm hakları saklıdır.",
+    "privacy": "Gizlilik Politikası",
+    "terms": "Aydınlatma Metni"
+  }
+}
