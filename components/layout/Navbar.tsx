@@ -138,12 +138,33 @@ export default function Navbar() {
             </div>
           </div>
 
-          <div className="lg:hidden flex items-center gap-4">
-            <button onClick={toggleLanguage} className="text-ink-light font-medium uppercase text-xs">{locale}</button>
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-ink-dark p-2">
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
+          <div className="lg:hidden flex items-center gap-4 relative z-50">
+  {/* Dil Değiştirme Butonu */}
+  <button 
+    type="button" 
+    onClick={(e) => {
+      e.preventDefault();
+      toggleLanguage();
+    }}
+    className="text-ink-light font-medium uppercase text-xs p-2 cursor-pointer touch-manipulation active:opacity-50"
+    style={{ WebkitTapHighlightColor: 'transparent' }}
+  >
+    {locale}
+  </button>
+
+  {/* Menü (3 Çizgi) Butonu */}
+  <button 
+    type="button" 
+    onClick={(e) => {
+      e.preventDefault();
+      setIsMenuOpen(!isMenuOpen);
+    }}
+    className="text-ink-dark p-2 cursor-pointer touch-manipulation active:opacity-50 relative z-50"
+    style={{ WebkitTapHighlightColor: 'transparent' }}
+  >
+    {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+  </button>
+</div>
         </div>
       </div>
 
