@@ -52,7 +52,7 @@ export default function Contact() {
                   <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center flex-shrink-0"><Mail className="w-5 h-5 text-sage-700" /></div>
                   <div>
                     <p className="text-sm font-medium text-ink-light mb-1">{t('email')}</p>
-                    <a href="mailto:gokcetoluc@hotmail.com" className="text-lg text-ink-dark hover:text-sage-500 transition-colors">gokcetoluc@hotmail.com</a>
+                    <a href="mailto:uzmpskgokce@gmail.com" className="text-lg text-ink-dark hover:text-sage-500 transition-colors">gokcetoluc@hotmail.com</a>
                   </div>
                 </div>
 
