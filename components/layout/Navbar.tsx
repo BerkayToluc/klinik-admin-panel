@@ -138,7 +138,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          <div className="md:hidden flex items-center gap-4">
+          <div className="lg:hidden flex items-center gap-4">
             <button onClick={toggleLanguage} className="text-ink-light font-medium uppercase text-xs">{locale}</button>
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-ink-dark p-2">
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -148,7 +148,7 @@ export default function Navbar() {
       </div>
 
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-b border-sand-500/20 absolute w-full left-0 z-40 animate-in slide-in-from-top duration-300">
+  <div className="lg:hidden bg-white border-b border-sand-500/20 absolute w-full left-0 top-20 z-40 animate-in slide-in-from-top duration-300 shadow-xl">
           <div className="px-4 pt-2 pb-6 space-y-4 shadow-xl">
             <Link href={`/${locale}#about`} onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-base font-medium text-ink-dark border-b border-sand-100">{t('about')}</Link>
             <Link href={`/${locale}#services`} onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-base font-medium text-ink-dark border-b border-sand-100">{t('services')}</Link>
