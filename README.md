@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 Klinik Psikolog Kurumsal Web Platformu & Yönetim Paneli
 
-## Getting Started
+Bu proje, Amerika'da hizmet veren bir klinik psikolog için sıfırdan (end-to-end) tasarlanıp geliştirilmiş; içerik yönetim sistemi (CMS) ve uluslararası randevu modüllerini barındıran modern bir web platformudur. 
 
-First, run the development server:
+Proje, modern web teknolojileri ve yapay zeka destekli **"Vibe Coding"** metodolojisi kullanılarak çevik (agile) bir yaklaşımla geliştirilmiş ve canlıya alınmıştır.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🔗 **Canlı Site:** [psikologgokcesakli.com](https://psikologgokcesakli.com)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Öne Çıkan Özellikler
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* **🌍 Çift Dil Desteği (i18n):** `next-intl` kullanılarak projenin tamamı Türkçe ve İngilizce dillerinde akıcı bir şekilde çalışacak şekilde yapılandırıldı.
+* **📅 Dinamik Randevu Sistemi:** Calendly API entegrasyonu ile Amerika ve Türkiye (veya dünyanın herhangi bir yeri) arasındaki saat dilimi (Timezone) farkları otomatik olarak hesaplanarak danışanlara pürüzsüz bir randevu deneyimi sunuldu.
+* **📋 Klinik Ölçekler ve Formlar:** Danışanların online olarak doldurabildiği psikolojik testler ve PDF bilgi formları sisteme entegre edildi.
+* **🔐 Supabase Entegrasyonu:** Dinamik içerik yönetimi ve veri depolama süreçleri için Supabase (PostgreSQL) kullanıldı. Güvenli kimlik doğrulama (Auth) ile Admin Paneli inşa edildi.
+* **📱 Responsive & Modern Arayüz:** Tailwind CSS kullanılarak her cihaza (mobil, tablet, masaüstü) %100 uyumlu, şık ve minimalist bir UI/UX tasarımı uygulandı.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠 Kullanılan Teknolojiler
 
-## Learn More
+* **Frontend:** Next.js (App Router), React, TypeScript/JavaScript
+* **Stilleme:** Tailwind CSS, Lucide React (İkonlar)
+* **Backend & Veritabanı:** Supabase (PostgreSQL & Auth)
+* **Çoklu Dil (i18n):** next-intl
+* **Canlıya Alma (Deployment):** Vercel (CI/CD Pipeline)
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Kurulum ve Geliştirme (Local Development)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Repoyu klonlayın:**
+   ```bash
+   git clone [https://github.com/KULLANICI_ADIN/klinik-admin-panel.git](https://github.com/KULLANICI_ADIN/klinik-admin-panel.git)
