@@ -31,7 +31,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed w-full z-50 bg-sand-50/90 backdrop-blur-md pointer-events-auto">
+    <nav className="fixed w-full z-50 bg-sand-50/90 backdrop-blur-md border-b border-sand-500/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
@@ -171,8 +171,8 @@ export default function Navbar() {
       {isMenuOpen && (
   <div className="lg:hidden bg-white border-b border-sand-500/20 absolute w-full left-0 top-20 z-40 animate-in slide-in-from-top duration-300 shadow-xl">
           <div className="px-4 pt-2 pb-6 space-y-4 shadow-xl">
-            <Link href={`/${locale}#about`} onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-base font-medium text-ink-dark border-b border-sand-100">{t('about')}</Link>
-            <Link href={`/${locale}#services`} onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-base font-medium text-ink-dark border-b border-sand-100">{t('services')}</Link>
+            <Link href={`/${locale}/#about`} onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-base font-medium text-ink-dark border-b border-sand-100">{t('about')}</Link>
+            <Link href={`/${locale}/#services`} onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-base font-medium text-ink-dark border-b border-sand-100">{t('services')}</Link>
             
             <div className="border-b border-sand-100 py-2">
                <p className="px-3 py-1 text-xs font-bold text-ink-light uppercase">Ölçek & Form</p>
@@ -184,15 +184,15 @@ export default function Navbar() {
                </Link>
             </div>
 
-            <Link href={`/${locale}#contact`} onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-base font-medium text-ink-dark border-b border-sand-100">{t('contact')}</Link>
-            <Link href={`/${locale}#faq`} onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-base font-medium text-ink-dark border-b border-sand-100">{t('faq')}</Link>
+            <Link href={`/${locale}/#contact`} onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-base font-medium text-ink-dark border-b border-sand-100">{t('contact')}</Link>
+            <Link href={`/${locale}/#faq`} onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-base font-medium text-ink-dark border-b border-sand-100">{t('faq')}</Link>
             
             <div className="pt-4 flex items-center justify-between">
               <div className="flex gap-6">
                 <a href="https://www.instagram.com/psikologgokcetoluc/" target="_blank" rel="noopener noreferrer" className="text-sage-500"><InstagramIcon className="w-6 h-6" /></a>
                 <a href="https://www.linkedin.com/in/g%C3%B6k%C3%A7e-tolu%C3%A7-sakl%C4%B1-779a88172/" target="_blank" rel="noopener noreferrer" className="text-sage-500"><LinkedinIcon className="w-6 h-6" /></a>
               </div>
-              <Link href={`/${locale}#booking`} onClick={() => setIsMenuOpen(false)} className="bg-sage-500 text-white px-6 py-2 rounded-full text-sm font-medium">{t('book')}</Link>
+              <Link href={`/${locale}/#booking`} onClick={() => setIsMenuOpen(false)} className="bg-sage-500 text-white px-6 py-2 rounded-full text-sm font-medium">{t('book')}</Link>
             </div>
           </div>
         </div>
