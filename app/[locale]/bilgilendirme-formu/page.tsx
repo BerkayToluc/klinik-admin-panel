@@ -75,13 +75,6 @@ export default async function BilgilendirmeFormuPage({ params }: { params: Promi
             <div className="flex gap-3">
               <span className="text-ink-dark/40 select-none">•</span>
               <p>
-                Yüz yüze bireysel seans ücreti <strong>1.250 ₺</strong>, online bireysel seans ücreti <strong>1.000 ₺</strong>, aile ve çift terapisi seans ücreti <strong>2.000 ₺</strong>'dir.
-              </p>
-            </div>
-
-            <div className="flex gap-3">
-              <span className="text-ink-dark/40 select-none">•</span>
-              <p>
                 Seansa katılmamak için önemli bir gerekçeniz olduğu durumda bunu terapistiniz ile en az <strong>24 saat öncesinden</strong> paylaşmanız beklenmektedir. Seansın olduğu gün içerisinde seanstan önce yapılan iptallerde seans ücretinin tamamı talep edilecektir.
               </p>
             </div>
