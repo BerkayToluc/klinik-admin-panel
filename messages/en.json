@@ -20,16 +20,16 @@
     "btnAbout": "About Me"
   },
   "About": {
-    "titlePrefix": "Hello, I'm",
-    "p1": "As an adult, child, and adolescent therapist, I graduated with honors in Psychology from Beykent University and completed my Master's in Clinical Psychology at Istanbul Gelişim University.",
-    "p2": "I gained extensive clinical experience at Bakırköy Mazhar Osman Psychiatric Hospital and Beylikdüzü State Hospital. After working in private clinics and serving 4 years at Çatalca Municipality, I relocated to the US.",
-    "p3": "Using Cognitive Behavioral Therapy (CBT), certified by Prof. Dr. Ebru Şalcıoğlu, I now provide online therapy globally. I also presented my thesis at the 12th International Paris Congress on Social Sciences and Humanities.",
+    "titlePrefix": "Who is Clinical Psychologist <green>Gökçe TOLUÇ SAKLI</green>?",
+    "p1": "Gökçe Toluç Saklı serves as an adult, child, and adolescent therapist. After graduating with honors from Beykent University's Psychology department in 2014, she completed her Master's degree in Clinical Psychology at Istanbul Gelişim University to earn her specialization.",
+    "p2": "During her training, she gained clinical experience at Bakırköy Mazhar Osman and Beylikdüzü State Hospital psychiatry departments. Between 2018 and 2025, she worked as a Clinical Psychologist at private clinics in Bakırköy, Suadiye, and Beylikdüzü. After working as a child and family psychologist at various institutions, she served as a Clinical Psychologist at Çatalca Municipality for 4 years.",
+    "p3": "In addition to her expertise in Cognitive Behavioral Therapy (CBT) and Schema Therapy, she enriched her clinical practice by completing Human Resources Specialization at Bahçeşehir University in 2022 and Art Therapy training at Istanbul University in 2023. In early August 2025, she presented her oral paper titled 'The Regulatory Effect of Sociodemographic Variables on the Relationship between Communication Skills and Social Anxiety in Young Adulthood' at the 12th International Paris Congress on Social Sciences and Humanities. She currently provides online therapy to clients worldwide from the United States.",
     "card1Title": "Clinical Experience",
-    "card1Desc": "Years of public and private clinical experience, including Bakırköy Mazhar Osman Psychiatric Hospital and Çatalca Municipality.",
+    "card1Desc": "Years of extensive clinical experience covering Bakırköy Mazhar Osman Hospital, private clinics, and Çatalca Municipality.",
     "card2Title": "Academic Background",
-    "card2Desc": "Honors degree, Master's in Clinical Psychology, and certified expertise in Cognitive Behavioral Therapy (CBT).",
-    "card3Title": "Comprehensive Care",
-    "card3Desc": "Online therapy accessible from anywhere in the world, dedicated to adults, children, and adolescents."
+    "card2Desc": "Honors degree, Master's in Clinical Psychology, CBT and Schema Therapy expertise, and Paris Congress paper.",
+    "card3Title": "Comprehensive Service",
+    "card3Desc": "Uninterrupted online therapy for adults, children, and adolescents worldwide, provided from the United States."
   },
   "Services": {
     "title": "Services & Expertise",
@@ -71,7 +71,9 @@
     "g4Title": "Professional Development",
     "g4Desc": "Continuous education sharing.",
     "g5Title": "Trainings and Seminars",
-    "g5Desc": "Interactive presentations organized for institutions and groups to support community mental health and share clinical experiences."
+    "g5Desc": "Interactive presentations organized for institutions and groups to support community mental health and share clinical experiences.",
+    "g6Title": "Congress and Papers",
+    "g6Desc": "2025 Paris Congress Paper"
   },
   "Contact": {
     "title": "Contact & Booking",

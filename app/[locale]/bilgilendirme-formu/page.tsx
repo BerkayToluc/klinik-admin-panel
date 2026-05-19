@@ -136,7 +136,7 @@ export default async function BilgilendirmeFormuPage({ params }: { params: Promi
               </div>
               <div className="space-y-8 text-right">
                 <p className="font-semibold text-ink-dark">Uzman Klinik Psikolog</p>
-                <p className="font-bold text-ink-dark">Gökçe TOLUÇ</p>
+                <p className="font-bold text-ink-dark">Gökçe TOLUÇ SAKLI</p>
               </div>
             </div>
           </div>

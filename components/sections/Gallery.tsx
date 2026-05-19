@@ -32,18 +32,24 @@ export default function Gallery() {
       description: t('g4Desc')
     },
     {
-      // DİKKAT: Dosyanın adının tam olarak bu olduğuna emin ol (.jpg veya .jpeg)
       src: "/images/seminer.jpeg", 
       alt: "Eğitim ve Seminer Sunumu",
       title: t('g5Title'),
       description: t('g5Desc')
+    },
+    {
+      src: "/images/Sertifika.jpeg",
+      alt: "Kongre ve Bildiriler",
+      title: t('g6Title'),
+      description: t('g6Desc')
     }
   ];
 
   return (
     <section id="gallery" className="py-20 lg:py-28 bg-sand-50">
-      {/* 5 eleman sığsın diye max genişliği (max-w-7xl yerine max-w-[90rem]) artırdık */}
-      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
+      {/* max-w-7xl yerine max-w-6xl kullanarak tüm galeriyi ekranda biraz daha toplu hale getirdik */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-ink-dark mb-4">
             {t('title')}
@@ -53,31 +59,32 @@ export default function Gallery() {
           </p>
         </div>
         
-        {/* lg:grid-cols-5 ile bilgisayarda 5 sütun yan yana olacak */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
+        {/* lg:grid-cols-3 ile yan yana 3 tane durmaya devam ediyor */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {galleryItems.map((item, index) => (
             <div key={index} className="bg-white rounded-3xl overflow-hidden shadow-sm border border-sand-500/20 group hover:shadow-lg hover:border-sage-500/40 transition-all duration-300 flex flex-col">
               
-              {/* aspect-[4/3] yatay dikdörtgen formatıdır, fotoğrafların kesilmeden sığmasını sağlar */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-sand-100">
+              {/* aspect-[4/3] yerine aspect-[3/2] kullandık. Fotoğraf kalitesi aynı kalır ama ekranda dikey olarak daha az yer kaplar */}
+              <div className="relative aspect-[3/2] overflow-hidden bg-sand-100">
                 <Image 
                   src={item.src} 
                   alt={item.alt} 
                   fill 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 20vw" 
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
                   className="object-cover group-hover:scale-105 transition-transform duration-700" 
                 />
               </div>
               
-              <div className="p-5 flex-grow flex flex-col justify-between">
+              <div className="p-6 flex-grow flex flex-col justify-between">
                 <div>
-                  <h3 className="text-base font-bold text-ink-dark mb-2">{item.title}</h3>
-                  <p className="text-xs text-ink-light leading-relaxed">{item.description}</p>
+                  <h3 className="text-lg font-bold text-ink-dark mb-2">{item.title}</h3>
+                  <p className="text-sm text-ink-light leading-relaxed">{item.description}</p>
                 </div>
               </div>
             </div>
           ))}
         </div>
+        
       </div>
     </section>
   );

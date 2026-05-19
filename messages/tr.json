@@ -19,18 +19,18 @@
     "btnBook": "Randevu Al",
     "btnAbout": "Hakkımda"
   },
-  "About": {
-    "titlePrefix": "Merhaba, Ben",
-    "p1": "Yetişkin, çocuk ve ergen terapisti olarak görev yapmaktayım. 2014 yılında Beykent Üniversitesi Psikoloji bölümünden onur derecesiyle mezun olduktan sonra, İstanbul Gelişim Üniversitesi'nde Klinik Psikoloji yüksek lisansımı tamamlayarak uzmanlığımı aldım.",
-    "p2": "Eğitimim süresince Bakırköy Mazhar Osman ve Beylikdüzü Devlet Hastanesi psikiyatri servislerinde klinik deneyim kazandım. Çeşitli kurumlarda çocuk ve aile psikoloğu olarak çalıştıktan sonra, Çatalca Belediyesi'nde 4 yıl Klinik Psikolog olarak görev yaptım.",
-    "p3": "Bilişsel Davranışçı Terapi (BDT) uzmanlığımın yanı sıra, 2022 yılında Bahçeşehir Üniversitesi İnsan Kaynakları Uzmanlığı ve 2023 yılında İstanbul Üniversitesi Sanat Terapisi eğitimlerimi tamamlayarak klinik pratiğimi zenginleştirdim. Şu anda Amerika'dan tüm dünyadaki danışanlarıma online terapi sunuyorum.",
+"About": {
+    "titlePrefix": "Klinik Psikolog <green>Gökçe TOLUÇ SAKLI</green> Kimdir?",
+    "p1": "Gökçe Toluç Saklı, yetişkin, çocuk ve ergen terapisti olarak görev yapmaktadır. 2014 yılında Beykent Üniversitesi Psikoloji bölümünden onur derecesiyle mezun olduktan sonra, İstanbul Gelişim Üniversitesi'nde Klinik Psikoloji yüksek lisansını tamamlayarak uzmanlığını almıştır.",
+    "p2": "Eğitim süresince Bakırköy Mazhar Osman ve Beylikdüzü Devlet Hastanesi psikiyatri servislerinde klinik deneyim kazanmıştır. 2018-2025 yılları arasında Bakırköy, Suadiye ve Beylikdüzü’nde bulunan özel kliniklerde Klinik Psikolog olarak danışanlarını görmüştür. Çeşitli kurumlarda çocuk ve aile psikoloğu olarak çalıştıktan sonra, Çatalca Belediyesi'nde 4 yıl Klinik Psikolog olarak görev yapmıştır.",
+    "p3": "Bilişsel Davranışçı Terapi ve Şema Terapisti uzmanlığının yanı sıra, 2022 yılında Bahçeşehir Üniversitesi İnsan Kaynakları Uzmanlığı ve 2023 yılında İstanbul Üniversitesi Sanat Terapisi eğitimlerini tamamlayarak klinik pratiğini zenginleştirmiştir. 2025 yılının Ağustos ayının ilk günlerinde 12. Uluslararası Paris Sosyal ve Beşeri Bilimler Kongresi’nde “Genç Yetişkinlikte İletişim Becerileri ve Sosyal Anksiyete İlişkisinde Sosyodemografik Değişkenlerin Düzenleyici Etkisi” konulu sözlü bildirisini sunmuştur. Şu anda Amerika'dan tüm dünyadaki danışanlarına online terapi hizmeti sunmaya devam etmektedir.",
     "card1Title": "Klinik Deneyim",
-    "card1Desc": "Bakırköy Mazhar Osman Hastanesi, Devlet Hastanesi ve Çatalca Belediyesi'ni kapsayan yıllara dayanan klinik tecrübe.",
+    "card1Desc": "Bakırköy Mazhar Osman Hastanesi, özel klinikler ve Çatalca Belediyesi'ni kapsayan yıllara dayanan klinik tecrübe.",
     "card2Title": "Akademik Altyapı",
-    "card2Desc": "Onur dereceli lisans, Klinik Psikoloji yüksek lisansı, BDT uzmanlığı ve İstanbul Üniversitesi Sanat Terapisi eğitimi.",
+    "card2Desc": "Onur dereceli lisans, Klinik Psikoloji yüksek lisansı, BDT ve Şema Terapi uzmanlığı ile Paris Kongresi bildirisi.",
     "card3Title": "Kapsamlı Hizmet",
     "card3Desc": "Yetişkin, çocuk ve ergen danışanlara yönelik, Amerika'dan tüm dünyaya kesintisiz online terapi imkanı."
-},
+  },
   "Services": {
     "title": "Hizmetler & Uzmanlık Alanları",
     "description": "Kaygı bozuklukları, sosyal fobi, depresyon, OKB, travma ve ilişki dinamikleri başlıca uzmanlık alanlarımı oluşturmaktadır.",
@@ -60,7 +60,7 @@
     "author": "Klnk. Psk. Gökçe Toluç Saklı"
   },
   "Gallery": {
-    "title": "Eğitim ve Atölye Çalışmaları",
+    "title": "Eğitim, Kongre ve Atölye Çalışmaları",
     "description": "Bilgi ve deneyim paylaşımı odaklı kurumsal eğitimler ve atölye çalışmaları.",
     "g1Title": "Seminer & Sunumlar",
     "g1Desc": "Kurumsal ekiplere yönelik farkındalık seminerleri.",
@@ -71,7 +71,9 @@
     "g4Title": "Mesleki Gelişim",
     "g4Desc": "Sürekli eğitim odaklı paylaşımlar.",
     "g5Title": "Eğitim ve Seminerler",
-    "g5Desc": "Toplum ruh sağlığını desteklemek ve klinik tecrübeleri paylaşmak amacıyla kurumlara ve gruplara yönelik düzenlenen interaktif sunum çalışmaları."
+    "g5Desc": "Toplum ruh sağlığını desteklemek ve klinik tecrübeleri paylaşmak amacıyla kurumlara ve gruplara yönelik düzenlenen interaktif sunum çalışmaları.",
+    "g6Title": "Kongre ve Bildiriler",
+    "g6Desc": "2025 Paris Kongresi Bildirisi"
   },
   "Contact": {
     "title": "İletişim & Randevu",

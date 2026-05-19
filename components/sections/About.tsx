@@ -1,8 +1,10 @@
+'use client';
+
 import { GraduationCap, HeartHandshake, Globe2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 export default function About() {
-  const t = useTranslations('About'); // Çevirmenimizi About sözlüğüne bağladık
+  const t = useTranslations('About');
 
   const highlights = [
     {
@@ -30,7 +32,10 @@ export default function About() {
           {/* Sol Taraf: Metin */}
           <div>
             <h2 className="text-3xl sm:text-4xl font-bold text-ink-dark mb-6">
-              {t('titlePrefix')} <span className="text-sage-500">Gökçe Toluç Saklı</span>
+              {/* Zengin Metin (Rich Text) kullanımı: <green> etiketleri arasına gelen metin yeşil olur */}
+              {t.rich('titlePrefix', {
+                green: (chunks) => <span className="text-sage-500">{chunks}</span>
+              })}
             </h2>
             <div className="space-y-4 text-lg text-ink-light leading-relaxed">
               <p>{t('p1')}</p>
