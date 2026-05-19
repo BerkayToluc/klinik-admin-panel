@@ -6,6 +6,15 @@ import Image from 'next/image';
 import { LayoutDashboard, FileText, Users, Settings, LogOut, Search, Eye, Bell, Activity, Plus, Minus, X, Trash2, AlertCircle, Loader2, Lock } from 'lucide-react';
 import { useLocale } from 'next-intl';
 import { supabase } from '@/lib/supabase';
+import { testDatabase } from '@/data/testDatabase';
+
+// İSİM FORMATLAMA (Büyük/Küçük Harf Düzenleyici)
+const formatNameTR = (str: string) => {
+  if (!str) return "";
+  return str.trim().split(/\s+/).map(word => {
+    return word.charAt(0).toLocaleUpperCase('tr-TR') + word.slice(1).toLocaleLowerCase('tr-TR');
+  }).join(' ');
+};
 
 const questionsList = [
   "Bayılacağım", "Bende beyin tümörü olmalı", "Kalp krizi geçireceğim", "Öleceğim",
@@ -18,40 +27,51 @@ const optionsMap: Record<number, string> = {
   1: "Hiçbir zaman (1)", 2: "Nadiren (2)", 3: "Yarı yarıya (3)", 4: "Genellikle (4)", 5: "Her zaman (5)"
 };
 
+const calculateAge = (dob: string | null) => {
+  if (!dob) return null;
+  const birthDate = new Date(dob);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+};
+
 export default function AdminDashboard() {
   const locale = useLocale();
   
-  // 1. GÜVENLİK (LOGIN) STATE'İ
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [loginError, setLoginError] = useState(false);
 
-  // 2. MENÜ (SEKME) STATE'İ
   const [activeTab, setActiveTab] = useState<'dashboard' | 'results' | 'clients'>('dashboard');
   
-  // 3. ARAMA VE VERİ STATELERİ
   const [searchQuery, setSearchQuery] = useState("");
   const [submissions, setSubmissions] = useState<any[]>([]);
   const [clients, setClients] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false); // Sadece giriş yapıldıktan sonra yüklenir
+  const [isLoading, setIsLoading] = useState(false); 
   
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteListModalOpen, setIsDeleteListModalOpen] = useState(false);
   const [viewedSubmission, setViewedSubmission] = useState<any | null>(null);
-  const [newClientName, setNewClientName] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const [modalError, setModalError] = useState("");
+
+  const [newClientName, setNewClientName] = useState("");
+  const [newClientBirthDate, setNewClientBirthDate] = useState("");
+  const [newClientGender, setNewClientGender] = useState("");
+  const [newClientMaritalStatus, setNewClientMaritalStatus] = useState("");
+  const [newClientEmploymentStatus, setNewClientEmploymentStatus] = useState("");
 
   const [deleteConfirm, setDeleteConfirm] = useState<{
     isOpen: boolean; id: string | null; name: string; type: 'test' | 'client';
   }>({ isOpen: false, id: null, name: "", type: "test" });
 
-  // GİRİŞ YAPMA FONKSİYONU (Maskelenmiş Şifre ile)
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // "QmVya2F5MjMyMw==" metni, "Berkay2323" şifresinin Base64 ile maskelenmiş halidir.
-    // Sen şifreyi girdiğinde kod bunu çevirip kıyaslar. 
-    // GitHub'a bakan biri sadece "QmVya2F5MjMyMw==" yazısını görür, asıl şifreni bilemez.
     if (btoa(passwordInput) === "QmVya2F5MjMyMw==") { 
       setIsAuthenticated(true);
       setLoginError(false);
@@ -61,6 +81,7 @@ export default function AdminDashboard() {
       setPasswordInput("");
     }
   };
+
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -80,15 +101,45 @@ export default function AdminDashboard() {
 
   const handleAddClient = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newClientName.trim() === "") return;
+    setModalError("");
+    
+    const cleanClientName = formatNameTR(newClientName);
+    
+    if (cleanClientName === "") return;
     setIsProcessing(true);
+    
     try {
-      await supabase.from('clients').insert([{ name: newClientName }]);
+      const { data: existingClients } = await supabase
+        .from('clients')
+        .select('id')
+        .ilike('name', cleanClientName)
+        .limit(1);
+
+      if (existingClients && existingClients.length > 0) {
+        setModalError(`"${cleanClientName}" isminde bir danışan sistemde zaten kayıtlı!`);
+        setIsProcessing(false);
+        return; 
+      }
+
+      await supabase.from('clients').insert([{ 
+        name: cleanClientName,
+        birth_date: newClientBirthDate || null, 
+        gender: newClientGender,
+        marital_status: newClientMaritalStatus,
+        employment_status: newClientEmploymentStatus
+      }]);
+      
       await fetchData(); 
       setIsAddModalOpen(false);
+      
       setNewClientName("");
+      setNewClientBirthDate("");
+      setNewClientGender("");
+      setNewClientMaritalStatus("");
+      setNewClientEmploymentStatus("");
     } catch (error) {
       console.error("Danışan eklenemedi:", error);
+      setModalError("Kayıt sırasında bir hata oluştu.");
     } finally {
       setIsProcessing(false);
     }
@@ -130,7 +181,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // CANLI ARAMA FİLTRELERİ (Search Engine)
   const filteredSubmissions = submissions.filter(sub => 
     sub.patient.toLowerCase().includes(searchQuery.toLowerCase()) || 
     sub.test.toLowerCase().includes(searchQuery.toLowerCase())
@@ -140,8 +190,6 @@ export default function AdminDashboard() {
     client.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-
-  // --- GİRİŞ EKRANI (LOGIN YÜZÜ) ---
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-sand-50 flex flex-col items-center justify-center p-4">
@@ -188,11 +236,9 @@ export default function AdminDashboard() {
     );
   }
 
-  // --- ANA PANEL EKRANI ---
   return (
     <div className="min-h-screen bg-sand-50 flex">
       
-      {/* SOL MENÜ */}
       <aside className="w-64 bg-ink-dark text-sand-50 hidden md:flex flex-col fixed h-full z-10">
         <div className="p-6 border-b border-white/10 flex items-center gap-3">
           <div className="relative w-10 h-10 bg-white rounded-full p-1">
@@ -241,10 +287,7 @@ export default function AdminDashboard() {
         </div>
       </aside>
 
-      {/* ANA İÇERİK ALANI */}
       <main className="flex-1 md:ml-64 p-4 md:p-8">
-        
-        {/* Üst Bar (Arama ve Butonlar) */}
         <header className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-8 bg-white p-4 rounded-2xl border border-sand-200 shadow-sm">
           <div>
             <h1 className="text-2xl font-bold text-ink-dark">
@@ -267,7 +310,7 @@ export default function AdminDashboard() {
             </div>
             
             <div className="flex gap-2 w-full sm:w-auto">
-              <button onClick={() => setIsAddModalOpen(true)} className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-[#7c9082] text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-[#5e6f63] transition-colors shadow-sm whitespace-nowrap">
+              <button onClick={() => { setIsAddModalOpen(true); setModalError(""); }} className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-[#7c9082] text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-[#5e6f63] transition-colors shadow-sm whitespace-nowrap">
                 <Plus className="w-4 h-4" /> Yeni Danışan
               </button>
               <button onClick={() => setIsDeleteListModalOpen(true)} className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white border border-red-200 text-red-600 px-4 py-2 rounded-full text-sm font-bold hover:bg-red-50 transition-colors shadow-sm whitespace-nowrap">
@@ -277,10 +320,8 @@ export default function AdminDashboard() {
           </div>
         </header>
 
-        {/* SEKME: PANEL ÖZETİ (DASHBOARD) */}
         {activeTab === 'dashboard' && (
           <div className="animate-in fade-in duration-300">
-            {/* İstatistik Kartları */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
               <div className="bg-white p-6 rounded-2xl border border-sand-200 shadow-sm flex items-center gap-4">
                 <div className="w-12 h-12 bg-sage-100 text-[#7c9082] rounded-full flex items-center justify-center"><FileText className="w-6 h-6" /></div>
@@ -305,7 +346,6 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {/* Son 5 Test Tablosu */}
             <div className="bg-white rounded-2xl border border-sand-200 shadow-sm overflow-hidden">
               <div className="p-6 border-b border-sand-200 flex justify-between items-center bg-sand-50/50">
                 <h3 className="text-lg font-bold text-ink-dark">Son Doldurulan Ölçekler (Özet)</h3>
@@ -338,7 +378,6 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* SEKME: TÜM ÖLÇEK SONUÇLARI */}
         {activeTab === 'results' && (
           <div className="bg-white rounded-2xl border border-sand-200 shadow-sm overflow-hidden animate-in fade-in duration-300">
              <div className="p-6 border-b border-sand-200 flex justify-between items-center bg-sand-50/50">
@@ -376,7 +415,6 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* SEKME: DANIŞANLAR LİSTESİ */}
         {activeTab === 'clients' && (
           <div className="bg-white rounded-2xl border border-sand-200 shadow-sm overflow-hidden animate-in fade-in duration-300">
              <div className="p-6 border-b border-sand-200 flex justify-between items-center bg-sand-50/50">
@@ -395,16 +433,21 @@ export default function AdminDashboard() {
                           </div>
                           <div>
                             <h4 className="font-bold text-ink-dark text-lg leading-tight">{client.name}</h4>
-                            {/* YAŞ VE CİNSİYET BURAYA EKLENDİ */}
-                            <div className="flex gap-2 mt-1.5 mb-1">
-                               <span className="text-[10px] font-bold bg-white text-ink-dark border border-sand-200 px-2 py-0.5 rounded-md">
-                                 {client.age ? `${client.age} Yaş` : 'Yaş Girilmedi'}
+                            <div className="flex flex-wrap gap-2 mt-2 mb-2">
+                               <span className="text-[10px] font-bold bg-[#7c9082]/10 text-[#7c9082] border border-[#7c9082]/20 px-2 py-1 rounded-md">
+                                 {client.birth_date ? `${calculateAge(client.birth_date)} Yaş` : 'Yaş Belirsiz'}
                                </span>
-                               <span className="text-[10px] font-bold bg-white text-ink-dark border border-sand-200 px-2 py-0.5 rounded-md">
-                                 {client.gender ? client.gender : 'Cinsiyet Girilmedi'}
+                               <span className="text-[10px] font-bold bg-sand-100 text-ink-dark border border-sand-200 px-2 py-1 rounded-md">
+                                 {client.gender || 'Cinsiyet Belirsiz'}
+                               </span>
+                               <span className="text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100 px-2 py-1 rounded-md">
+                                 {client.marital_status || 'Medeni Durum Belirsiz'}
+                               </span>
+                               <span className="text-[10px] font-bold bg-orange-50 text-orange-700 border border-orange-100 px-2 py-1 rounded-md">
+                                 {client.employment_status || 'İş Durumu Belirsiz'}
                                </span>
                             </div>
-                            <p className="text-[10px] text-ink-light">Kayıt: {formatDate(client.created_at)}</p>
+                            <p className="text-[10px] text-ink-light mt-1">Kayıt: {formatDate(client.created_at)}</p>
                           </div>
                         </div>
                       </div>
@@ -425,7 +468,6 @@ export default function AdminDashboard() {
 
       </main>
 
-      {/* DETAY MODALI VE SİLME MODALLARI */}
       {viewedSubmission && (
         <div className="fixed inset-0 bg-ink-dark/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-200">
@@ -436,6 +478,7 @@ export default function AdminDashboard() {
               </div>
               <button onClick={() => setViewedSubmission(null)} className="p-2 bg-sand-50 rounded-full text-ink-light hover:bg-red-50 hover:text-red-500 transition-colors"><X className="w-5 h-5" /></button>
             </div>
+            
             <div className="mb-8 flex items-center gap-4 bg-sand-50 p-4 rounded-xl border border-sand-200">
                <div><p className="text-xs uppercase font-bold text-ink-light">Ölçek Adı</p><p className="font-bold text-ink-dark">{viewedSubmission.test}</p></div>
                <div className="h-10 w-px bg-sand-200 mx-4"></div>
@@ -444,19 +487,69 @@ export default function AdminDashboard() {
                  <span className={`inline-flex px-3 py-1 rounded-md text-sm font-bold ${viewedSubmission.risk === 'Yüksek' ? 'bg-red-100 text-red-700' : viewedSubmission.risk === 'Orta' ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700'}`}>{viewedSubmission.risk || "Belirsiz"}</span>
                </div>
             </div>
+
             <h3 className="font-bold text-lg text-ink-dark mb-4">Verilen Cevaplar:</h3>
+            
             <div className="space-y-3">
-              {questionsList.map((question, index) => {
-                const answerValue = viewedSubmission.answers ? viewedSubmission.answers[index] : null;
-                const answerText = answerValue ? optionsMap[answerValue] : "Cevaplanmadı";
-                return (
-                  <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-sand-200 rounded-xl hover:border-sage-300 transition-colors">
-                    <p className="text-ink-dark font-medium pr-4"><span className="text-sand-400 mr-2">{index + 1}.</span>{question}</p>
-                    <span className={`mt-2 sm:mt-0 whitespace-nowrap px-3 py-1 rounded-lg text-sm font-bold ${answerValue ? 'bg-sage-50 text-[#7c9082]' : 'bg-gray-100 text-gray-400'}`}>{answerText}</span>
-                  </div>
-                );
-              })}
+              {(() => {
+                const activeScaleObj = Object.values(testDatabase || {}).find(
+                  (test: any) => test.title === viewedSubmission.test
+                ) as any;
+                
+                const questionsToDisplay = activeScaleObj ? activeScaleObj.questions : [];
+
+                if (questionsToDisplay.length === 0) {
+                  return questionsList.map((question, index) => {
+                    const answerValue = viewedSubmission.answers ? viewedSubmission.answers[index] : null;
+                    const answerText = answerValue ? (typeof answerValue === 'object' ? optionsMap[answerValue.value] : optionsMap[answerValue]) : "Cevaplanmadı";
+                    
+                    // NUMARA TEMİZLEME REGEX'İ EKLENDİ
+                    const cleanQuestion = question.replace(/^\d+[\.\-)]\s*/, '');
+
+                    return (
+                      <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-sand-200 rounded-xl hover:border-sage-300 transition-colors">
+                        <p className="text-ink-dark font-medium pr-4"><span className="text-sand-400 mr-2">{index + 1}.</span>{cleanQuestion}</p>
+                        <span className={`mt-2 sm:mt-0 whitespace-nowrap px-3 py-1 rounded-lg text-sm font-bold ${answerValue ? 'bg-sage-50 text-[#7c9082]' : 'bg-gray-100 text-gray-400'}`}>{answerText || "Cevaplandı"}</span>
+                      </div>
+                    );
+                  });
+                }
+
+                return questionsToDisplay.map((q: any, index: number) => {
+                  const answerObj = viewedSubmission.answers ? viewedSubmission.answers[index] : null;
+                  let answerText = "Cevaplanmadı";
+
+                  if (answerObj) {
+                    if (activeScaleObj.scoringType === 'dual') {
+                      answerText = `Kaygı: ${answerObj.kaygi ?? 0} | Kaçınma: ${answerObj.kacinma ?? 0}`;
+                    } else if (activeScaleObj.scoringType === 'slider') {
+                      answerText = `%${answerObj.value ?? answerObj}`;
+                    } else {
+                      const currentAnsValue = typeof answerObj === 'object' && answerObj !== null && 'value' in answerObj ? answerObj.value : answerObj;
+                      const selectedOpt = q.options?.find((opt: any) => opt.value === currentAnsValue);
+                      answerText = selectedOpt ? selectedOpt.label : (optionsMap[currentAnsValue] || `Değer: ${currentAnsValue}`);
+                    }
+                  }
+
+                  // NUMARA TEMİZLEME REGEX'İ EKLENDİ (Örn: "18. Midede" -> "Midede")
+                  const rawText = q.text || q;
+                  const cleanText = typeof rawText === 'string' ? rawText.replace(/^\d+[\.\-)]\s*/, '') : rawText;
+
+                  return (
+                    <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-sand-200 rounded-xl hover:border-sage-300 transition-colors">
+                      <p className="text-ink-dark font-medium pr-4">
+                        <span className="text-sand-400 mr-2">{index + 1}.</span>
+                        {cleanText}
+                      </p>
+                      <span className={`mt-2 sm:mt-0 whitespace-nowrap px-3 py-1 rounded-lg text-sm font-bold ${answerObj ? 'bg-sage-50 text-[#7c9082]' : 'bg-gray-100 text-gray-400'}`}>
+                        {answerText}
+                      </span>
+                    </div>
+                  );
+                });
+              })()}
             </div>
+            
             <div className="mt-8 pt-6 border-t border-sand-100 flex justify-end">
               <button onClick={() => setViewedSubmission(null)} className="px-6 py-3 rounded-full bg-[#7c9082] text-white font-bold hover:bg-[#5e6f63] transition-colors">Pencereyi Kapat</button>
             </div>
@@ -466,13 +559,69 @@ export default function AdminDashboard() {
 
       {isAddModalOpen && (
         <div className="fixed inset-0 bg-ink-dark/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl">
-            <div className="flex justify-between items-center mb-6"><h3 className="text-xl font-bold text-ink-dark">Yeni Danışan Ekle</h3><button onClick={() => setIsAddModalOpen(false)} className="text-red-500"><X className="w-6 h-6" /></button></div>
+          <div className="bg-white rounded-3xl p-6 w-full max-w-lg shadow-2xl">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-ink-dark">Yeni Danışan Ekle</h3>
+              <button onClick={() => setIsAddModalOpen(false)} className="text-red-500 hover:bg-red-50 p-1 rounded-full"><X className="w-6 h-6" /></button>
+            </div>
+
+            {modalError && (
+              <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-3 rounded-r-lg shadow-sm flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                <p className="text-red-700 text-xs font-bold">{modalError}</p>
+              </div>
+            )}
+
             <form onSubmit={handleAddClient}>
-              <div className="mb-6"><input type="text" value={newClientName} onChange={(e) => setNewClientName(e.target.value)} placeholder="Ad Soyad..." autoFocus className="w-full border rounded-xl px-4 py-3 text-ink-dark focus:border-[#7c9082]" /></div>
-              <div className="flex gap-3">
-                <button type="button" onClick={() => setIsAddModalOpen(false)} className="flex-1 py-3 rounded-full border text-ink-dark font-bold hover:bg-sand-50">İptal</button>
-                <button type="submit" disabled={!newClientName || isProcessing} className="flex-1 py-3 bg-[#7c9082] text-white font-bold rounded-full">{isProcessing ? "Ekleniyor..." : "Ekle"}</button>
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label className="block text-[11px] font-black text-sage-700 uppercase tracking-wider mb-1">Ad Soyad <span className="text-red-500">*</span></label>
+                  <input type="text" value={newClientName} onChange={(e) => { setNewClientName(e.target.value); setModalError(""); }} placeholder="Örn: Ayşe Demir..." autoFocus className="w-full border rounded-xl px-4 py-2 text-ink-dark focus:border-[#7c9082] focus:ring-1 focus:ring-[#7c9082] outline-none" />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-black text-sage-700 uppercase tracking-wider mb-1">Doğum Tarihi</label>
+                    <input type="date" value={newClientBirthDate} onChange={(e) => { setNewClientBirthDate(e.target.value); setModalError(""); }} className="w-full border rounded-xl px-4 py-2 text-ink-dark focus:border-[#7c9082] focus:ring-1 focus:ring-[#7c9082] outline-none" />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-black text-sage-700 uppercase tracking-wider mb-1">Cinsiyet</label>
+                    <select value={newClientGender} onChange={(e) => { setNewClientGender(e.target.value); setModalError(""); }} className="w-full border rounded-xl px-4 py-2 text-ink-dark focus:border-[#7c9082] focus:ring-1 focus:ring-[#7c9082] outline-none appearance-none bg-white">
+                      <option value="">Seçiniz...</option>
+                      <option value="Kadın">Kadın</option>
+                      <option value="Erkek">Erkek</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-black text-sage-700 uppercase tracking-wider mb-1">Medeni Durum</label>
+                    <select value={newClientMaritalStatus} onChange={(e) => { setNewClientMaritalStatus(e.target.value); setModalError(""); }} className="w-full border rounded-xl px-4 py-2 text-ink-dark focus:border-[#7c9082] focus:ring-1 focus:ring-[#7c9082] outline-none appearance-none bg-white">
+                      <option value="">Seçiniz...</option>
+                      <option value="Bekar">Bekar</option>
+                      <option value="Evli">Evli</option>
+                      <option value="Boşanmış">Boşanmış</option>
+                      <option value="Dul">Dul</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-black text-sage-700 uppercase tracking-wider mb-1">İş Durumu</label>
+                    <select value={newClientEmploymentStatus} onChange={(e) => { setNewClientEmploymentStatus(e.target.value); setModalError(""); }} className="w-full border rounded-xl px-4 py-2 text-ink-dark focus:border-[#7c9082] focus:ring-1 focus:ring-[#7c9082] outline-none appearance-none bg-white">
+                      <option value="">Seçiniz...</option>
+                      <option value="Çalışıyor (Tam Zamanlı)">Çalışıyor (Tam Zamanlı)</option>
+                      <option value="Çalışıyor (Yarı Zamanlı/Serbest)">Çalışıyor (Yarı Zamanlı/Serbest)</option>
+                      <option value="Çalışmıyor / İş Arıyor">Çalışmıyor / İş Arıyor</option>
+                      <option value="Öğrenci">Öğrenci</option>
+                      <option value="Emekli">Emekli</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex gap-3 pt-2 border-t border-sand-100">
+                <button type="button" onClick={() => setIsAddModalOpen(false)} className="flex-1 py-3 rounded-xl border text-ink-dark font-bold hover:bg-sand-50 transition-colors">İptal</button>
+                <button type="submit" disabled={!newClientName || isProcessing} className="flex-1 py-3 bg-[#7c9082] text-white font-bold rounded-xl hover:bg-[#5e6f63] transition-colors disabled:opacity-50">{isProcessing ? "İşleniyor..." : "Danışanı Kaydet"}</button>
               </div>
             </form>
           </div>

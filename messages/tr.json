@@ -1,11 +1,15 @@
 {
   "Navbar": {
-    "about": "Hakkımda",
-    "services": "Hizmetler",
-    "scales": "Ölçekler",
-    "contact": "İletişim",
-    "faq": "SSS",
-    "book": "Randevu Al"
+  "about": "Hakkımda",
+  "services": "Hizmetler",
+  "scales": "Ölçek & Form",
+  "clinicalScales": "Klinik Ölçekler",
+  "clinicalScalesDesc": "Online Testler",
+  "forms": "Bilgi Formları",
+  "formsDesc": "PDF Dökümanlar",
+  "contact": "İletişim",
+  "faq": "SSS",
+  "book": "Randevu Al"
   },
   "Hero": {
     "badge": "Klinik Psikolog & Psikoterapist",
@@ -84,9 +88,10 @@
     "calendarDesc": "Size en uygun zamanı seçerek görüşmemizi planlayabilirsiniz.",
     "calendarPlaceholder": "Takvim Yükleniyor...",
     "calendarPlaceholderDesc": "Calendly bağlantınız buraya gömülecek.",
-    "kvkkCheck": "'ni okudum, anladım ve kişisel verilerimin işlenmesini kabul ediyorum.",
+    "kvkkCheck": "'ni okudum ve kabul ediyorum.",
+    "formCheck": "'nu okudum ve onaylıyorum.",
     "kvkkRequiredTitle": "Onay Gerekiyor",
-    "kvkkRequiredDesc": "Takvimi görüntülemek için lütfen yukarıdaki KVKK metnini onaylayın."
+    "kvkkRequiredDesc": "Takvimi görüntülemek için lütfen her iki onay kutusunu da işaretleyin."
   },
   "Footer": {
     "slogan": "Klinik Psikolog & Psikoterapist.",

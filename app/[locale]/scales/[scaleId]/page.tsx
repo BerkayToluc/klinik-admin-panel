@@ -1,13 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
-import { ArrowLeft, Check, Send, CheckCircle2, User, Loader2, AlertCircle, ChevronRight, ChevronLeft, Info } from 'lucide-react';
+import { ArrowLeft, Check, Send, CheckCircle2, User, Loader2, AlertCircle, ChevronRight, ChevronLeft, Info, X } from 'lucide-react';
 import { useLocale } from 'next-intl';
 import { supabase } from '@/lib/supabase';
 import { testDatabase } from '@/data/testDatabase';
+
+// İSİM FORMATLAMA (Büyük/Küçük Harf Düzenleyici)
+const formatNameTR = (str: string) => {
+  if (!str) return "";
+  return str.trim().split(/\s+/).map(word => {
+    return word.charAt(0).toLocaleUpperCase('tr-TR') + word.slice(1).toLocaleLowerCase('tr-TR');
+  }).join(' ');
+};
+
+// DOĞUM TARİHİNDEN YAŞ HESAPLAMA FONKSİYONU
+const calculateAge = (dob: string | null) => {
+  if (!dob) return null;
+  const birthDate = new Date(dob);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+};
 
 export default function DynamicScalePage() {
   const locale = useLocale();
@@ -16,46 +37,66 @@ export default function DynamicScalePage() {
   
   const currentTest = testDatabase[scaleId];
 
-  // YENİ DURUMLAR (STATES)
+  // STATE'LER 
   const [patientName, setPatientName] = useState("");
-  const [patientAge, setPatientAge] = useState("");
+  const [patientBirthDate, setPatientBirthDate] = useState("");
   const [patientGender, setPatientGender] = useState("");
+  const [patientMaritalStatus, setPatientMaritalStatus] = useState("");
+  const [patientEmploymentStatus, setPatientEmploymentStatus] = useState("");
+
   const [answers, setAnswers] = useState<Record<number, any>>({});
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Hangi sorudayız?
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); 
   
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showValidation, setShowValidation] = useState(false); // Bilgileri girmeden teste başlamasın diye
+  
+  // HATA YÖNETİMİ STATE'LERİ
+  const [showValidation, setShowValidation] = useState(false); // Kırmızı çerçeveler için
+  const [errorMessage, setErrorMessage] = useState(""); // Formun içindeki sabit kırmızı kutu için
+  const [toastMessage, setToastMessage] = useState(""); // Yukarıdan düşen bulut (Toast) için
 
   const qIndex = currentQuestionIndex;
   const q = currentTest?.questions[qIndex];
 
-  // CEVAPLAMA FONKSİYONLARI
+  // BULUT UYARININ 3 SANİYE SONRA KAPANMASI İÇİN (Timer)
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => {
+        setToastMessage("");
+      }, 3000); // 3000 milisaniye = 3 Saniye
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
+
   const handleOptionSelect = (val: number, optIndex: number) => {
+    setErrorMessage(""); 
     setAnswers(prev => ({ ...prev, [qIndex]: { value: val, selectedIndex: optIndex } }));
   };
 
   const handleDualSelect = (type: 'kaygi' | 'kacinma', val: number) => {
+    setErrorMessage("");
     setAnswers(prev => ({ ...prev, [qIndex]: { ...prev[qIndex], [type]: val } }));
   };
 
-  // ŞU ANKİ SORU CEVAPLANDI MI? (İleri butonunu açmak için)
   const isCurrentQuestionAnswered = () => {
     const ans = answers[qIndex];
     if (!ans) return false;
-    if (currentTest.scoringType === 'dual') {
+    if (currentTest?.scoringType === 'dual') {
       return ans.kaygi !== undefined && ans.kacinma !== undefined;
     }
     return ans.value !== undefined;
   };
 
-  // İLERİ / GERİ BUTONLARI
   const handleNext = () => {
-    if (patientName.trim() === "" || patientAge.trim() === "" || patientGender === "") {
+    // EĞER BİLGİLER EKSİKSE:
+    if (patientName.trim() === "" || patientBirthDate.trim() === "" || patientGender === "" || patientMaritalStatus === "" || patientEmploymentStatus === "") {
       setShowValidation(true);
-      alert("Lütfen teste başlamadan önce Ad, Yaş ve Cinsiyet bilgilerinizi eksiksiz doldurun.");
+      setErrorMessage("Lütfen teste başlamadan önce kişisel bilgilerinizi (Doğum Tarihi dahil) eksiksiz doldurunuz.");
+      setToastMessage("Kişisel bilgileriniz eksik, lütfen formu kontrol ediniz!"); // Bulut uyarısını tetikle
       return;
     }
+    
+    setErrorMessage(""); 
     if (currentQuestionIndex < currentTest.questions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
     }
@@ -67,9 +108,9 @@ export default function DynamicScalePage() {
     }
   };
 
-  // GÖNDERME İŞLEMİ
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    setErrorMessage("");
     try {
       let totalScore = 0;
       if (currentTest.scoringType === 'dual') {
@@ -79,33 +120,48 @@ export default function DynamicScalePage() {
       }
 
       const riskLevel = currentTest.calculateRisk ? currentTest.calculateRisk(totalScore) : "Belirsiz";
+      const calculatedAgeAtTestTime = calculateAge(patientBirthDate);
+      const cleanPatientName = formatNameTR(patientName);
 
-      // 1. AYNI İSİMDE DANIŞAN VAR MI KONTROL ET (Mükerrer Kayıt Önleme)
-      const { data: existingClient } = await supabase
+      // 1. AYNI İSİMDE DANIŞAN VAR MI KONTROL ET (limit(1) KORUMASI EKLENDİ)
+      const { data: existingClients } = await supabase
         .from('clients')
         .select('id')
-        .eq('name', patientName)
-        .maybeSingle();
+        .ilike('name', cleanPatientName)
+        .limit(1); // Çökme koruması!
+
+      const existingClient = existingClients && existingClients.length > 0 ? existingClients[0] : null;
 
       if (!existingClient) {
-        // Danışan yoksa yeni kayıt oluştur
+        // Yoksa tertemiz ismiyle kaydet
         const { error: clientError } = await supabase.from('clients').insert([
-          { name: patientName, age: patientAge, gender: patientGender }
+          { 
+            name: cleanPatientName, 
+            birth_date: patientBirthDate || null, 
+            gender: patientGender,
+            marital_status: patientMaritalStatus,
+            employment_status: patientEmploymentStatus
+          }
         ]);
         if (clientError) throw clientError;
       } else {
-        // Danışan zaten varsa sadece Yaş ve Cinsiyetini güncelle (Yeni satır açma)
+        // Varsa bilgilerini güncelle
         const { error: updateError } = await supabase.from('clients')
-          .update({ age: patientAge, gender: patientGender })
+          .update({ 
+            birth_date: patientBirthDate || null, 
+            gender: patientGender,
+            marital_status: patientMaritalStatus,
+            employment_status: patientEmploymentStatus
+          })
           .eq('id', existingClient.id);
         if (updateError) throw updateError;
       }
 
-      // 2. Testi kaydet (Test her zaman yeni bir satır olarak eklenir)
+      // 2. Testi kaydet
       const { error: resultError } = await supabase.from('scale_results').insert([
         {
-          patient: patientName,
-          age: patientAge,
+          patient: cleanPatientName,
+          age: calculatedAgeAtTestTime ? calculatedAgeAtTestTime : null,
           gender: patientGender,
           test: currentTest.title,
           risk: riskLevel,
@@ -119,7 +175,8 @@ export default function DynamicScalePage() {
       setIsSubmitted(true);
     } catch (error: any) {
       console.error("VERİTABANI HATASI:", error);
-      alert(`Gönderilirken bir hata oluştu: ${error.message || "Bilinmeyen Hata"}`);
+      setErrorMessage("Sonuçlarınız gönderilirken bir hata oluştu. Lütfen tekrar deneyin.");
+      setToastMessage("Bağlantı hatası oluştu!");
     } finally {
       setIsSubmitting(false);
     }
@@ -139,12 +196,29 @@ export default function DynamicScalePage() {
     );
   }
 
-  // İLERLEME YÜZDESİ
   const progressPercentage = Math.round(((currentQuestionIndex) / currentTest.questions.length) * 100);
 
   return (
-    <main className="min-h-screen bg-white flex flex-col">
-      {/* ÜST BAR */}
+    <main className="min-h-screen bg-white flex flex-col relative">
+      
+      {/* ☁️ YUKARIDAN DÜŞEN OTOMATİK BULUT UYARISI (TOAST) */}
+      {toastMessage && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-md">
+          <div className="bg-red-600 text-white px-5 py-4 rounded-2xl shadow-2xl flex items-center justify-between animate-in slide-in-from-top-10 fade-in duration-300">
+            <div className="flex items-center gap-3">
+              <AlertCircle className="w-6 h-6 flex-shrink-0" />
+              <p className="text-sm font-bold leading-tight">{toastMessage}</p>
+            </div>
+            <button 
+              onClick={() => setToastMessage("")} 
+              className="text-white/70 hover:text-white p-1 ml-2 transition-colors focus:outline-none"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="border-b border-sand-100 bg-white sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
           <Link href={`/${locale}/scales`} className="flex items-center gap-2 text-ink-light hover:text-sage-500 transition-colors">
@@ -155,7 +229,6 @@ export default function DynamicScalePage() {
             <div className="relative w-12 h-12 transition-transform hover:scale-105">
               <Image src="/logo.png" alt="Logo" fill className="object-contain" />
             </div>
-            {/* BURASI DÜZELTİLDİ: Üstte küçük Klinik Psikolog, altta büyük İsim */}
             <div className="hidden sm:flex flex-col justify-center mt-1">
               <span className="text-[11px] font-bold text-ink-light tracking-wide leading-none mb-1">
                 Klinik Psikolog
@@ -172,40 +245,52 @@ export default function DynamicScalePage() {
         {!isSubmitted ? (
           <div className="animate-in slide-in-from-bottom-8 duration-700 flex-grow flex flex-col">
             
-            {/* KİŞİSEL BİLGİLER VE YÖNERGE */}
             <div className={currentQuestionIndex !== 0 ? "hidden sm:block mb-8" : "mb-8"}>
               <h2 className="text-2xl sm:text-3xl font-serif font-bold text-ink-dark mb-6 text-center">{currentTest.title}</h2>
               
-              <div className={`bg-white p-6 rounded-2xl border-2 shadow-sm mb-6 ${showValidation && (!patientName || !patientAge || !patientGender) ? 'border-red-400' : 'border-sand-200'}`}>
-                <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
-                  {/* AD SOYAD */}
-                  <div className="sm:col-span-6">
+              {/* SABİT KALAN KIRMIZI UYARI KUTUSU */}
+              {errorMessage && (
+                <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl shadow-sm flex items-start gap-3 animate-in slide-in-from-top-2">
+                  <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                  <p className="text-red-700 text-sm font-bold">{errorMessage}</p>
+                </div>
+              )}
+
+              <div className={`bg-white p-6 rounded-2xl border-2 shadow-sm mb-6 ${showValidation && (!patientName || !patientBirthDate || !patientGender || !patientMaritalStatus || !patientEmploymentStatus) ? 'border-red-400' : 'border-sand-200'}`}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2">
                     <label className="block text-[11px] font-black text-sage-700 uppercase tracking-wider mb-2">Adınız ve Soyadınız <span className="text-red-500">*</span></label>
                     <input 
                       type="text" 
                       value={patientName}
-                      onChange={(e) => setPatientName(e.target.value)}
+                      onChange={(e) => {
+                        setPatientName(e.target.value);
+                        setErrorMessage("");
+                      }}
                       placeholder="Örn: Ahmet Yılmaz"
                       className="w-full bg-sand-50 border border-sand-200 rounded-xl px-4 py-3 text-ink-dark font-bold focus:outline-none focus:ring-2 focus:ring-sage-400"
                     />
                   </div>
-                  {/* YAŞ */}
-                  <div className="sm:col-span-3">
-                    <label className="block text-[11px] font-black text-sage-700 uppercase tracking-wider mb-2">Yaşınız <span className="text-red-500">*</span></label>
+                  <div>
+                    <label className="block text-[11px] font-black text-sage-700 uppercase tracking-wider mb-2">Doğum Tarihiniz <span className="text-red-500">*</span></label>
                     <input 
-                      type="number" 
-                      value={patientAge}
-                      onChange={(e) => setPatientAge(e.target.value)}
-                      placeholder="Örn: 24"
+                      type="date" 
+                      value={patientBirthDate}
+                      onChange={(e) => {
+                        setPatientBirthDate(e.target.value);
+                        setErrorMessage("");
+                      }}
                       className="w-full bg-sand-50 border border-sand-200 rounded-xl px-4 py-3 text-ink-dark font-bold focus:outline-none focus:ring-2 focus:ring-sage-400"
                     />
                   </div>
-                  {/* CİNSİYET */}
-                  <div className="sm:col-span-3">
+                  <div>
                     <label className="block text-[11px] font-black text-sage-700 uppercase tracking-wider mb-2">Cinsiyetiniz <span className="text-red-500">*</span></label>
                     <select 
                       value={patientGender}
-                      onChange={(e) => setPatientGender(e.target.value)}
+                      onChange={(e) => {
+                        setPatientGender(e.target.value);
+                        setErrorMessage("");
+                      }}
                       className="w-full bg-sand-50 border border-sand-200 rounded-xl px-4 py-3 text-ink-dark font-bold focus:outline-none focus:ring-2 focus:ring-sage-400 appearance-none"
                     >
                       <option value="">Seçiniz...</option>
@@ -213,11 +298,45 @@ export default function DynamicScalePage() {
                       <option value="Erkek">Erkek</option>
                     </select>
                   </div>
+                  <div>
+                    <label className="block text-[11px] font-black text-sage-700 uppercase tracking-wider mb-2">Medeni Durumunuz <span className="text-red-500">*</span></label>
+                    <select 
+                      value={patientMaritalStatus}
+                      onChange={(e) => {
+                        setPatientMaritalStatus(e.target.value);
+                        setErrorMessage("");
+                      }}
+                      className="w-full bg-sand-50 border border-sand-200 rounded-xl px-4 py-3 text-ink-dark font-bold focus:outline-none focus:ring-2 focus:ring-sage-400 appearance-none"
+                    >
+                      <option value="">Seçiniz...</option>
+                      <option value="Bekar">Bekar</option>
+                      <option value="Evli">Evli</option>
+                      <option value="Boşanmış">Boşanmış</option>
+                      <option value="Dul">Dul</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-black text-sage-700 uppercase tracking-wider mb-2">İş Durumunuz <span className="text-red-500">*</span></label>
+                    <select 
+                      value={patientEmploymentStatus}
+                      onChange={(e) => {
+                        setPatientEmploymentStatus(e.target.value);
+                        setErrorMessage("");
+                      }}
+                      className="w-full bg-sand-50 border border-sand-200 rounded-xl px-4 py-3 text-ink-dark font-bold focus:outline-none focus:ring-2 focus:ring-sage-400 appearance-none"
+                    >
+                      <option value="">Seçiniz...</option>
+                      <option value="Çalışıyor (Tam Zamanlı)">Çalışıyor (Tam Zamanlı)</option>
+                      <option value="Çalışıyor (Yarı Zamanlı/Serbest)">Çalışıyor (Yarı Zamanlı/Serbest)</option>
+                      <option value="Çalışmıyor / İş Arıyor">Çalışmıyor / İş Arıyor</option>
+                      <option value="Öğrenci">Öğrenci</option>
+                      <option value="Emekli">Emekli</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* YÖNERGE */}
             <div className="bg-sage-50 border-l-4 border-sage-500 p-4 rounded-r-xl shadow-sm flex gap-3 items-start mb-8">
               <Info className="w-5 h-5 text-sage-600 mt-0.5 flex-shrink-0" />
               <p className="text-sage-800 text-sm leading-relaxed">
@@ -225,7 +344,6 @@ export default function DynamicScalePage() {
               </p>
             </div>
 
-            {/* İLERLEME ÇUBUĞU */}
             <div className="mb-8">
               <div className="flex justify-between text-xs font-bold text-sand-500 mb-2 uppercase tracking-widest">
                 <span>Soru {currentQuestionIndex + 1} / {currentTest.questions.length}</span>
@@ -236,7 +354,6 @@ export default function DynamicScalePage() {
               </div>
             </div>
 
-            {/* TEKLİ SORU KARTI */}
             <div className="bg-white rounded-3xl border border-sand-200 shadow-sm p-6 sm:p-10 mb-8 flex-grow flex flex-col justify-center">
               <h4 className="text-2xl sm:text-3xl font-bold text-ink-dark mb-10 text-center leading-tight">
                 {q.text ? q.text : `${currentQuestionIndex + 1}. Bölüm: Aşağıdakilerden size en uygun olanı seçiniz`}
@@ -263,7 +380,6 @@ export default function DynamicScalePage() {
                 </div>
               )}
 
-              {/* Dual ve Slider kısımları aynı kalıyor */}
               {currentTest.scoringType === 'dual' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="bg-sand-50 p-6 rounded-2xl">
@@ -337,7 +453,6 @@ export default function DynamicScalePage() {
               )}
             </div>
 
-            {/* İLERİ / GERİ VE GÖNDER BUTONLARI */}
             <div className="flex items-center justify-between border-t border-sand-200 pt-6">
               <button 
                 onClick={handlePrev}
@@ -367,12 +482,11 @@ export default function DynamicScalePage() {
             </div>
           </div>
         ) : (
-          /* Onay Ekranı Aynı Kalıyor */
           <div className="text-center py-20 animate-in zoom-in duration-500 flex-grow flex flex-col justify-center">
              <div className="w-24 h-24 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-8">
                <CheckCircle2 className="w-12 h-12 text-[#7c9082]" />
              </div>
-             <h2 className="text-4xl font-serif font-bold text-ink-dark mb-4">Teşekkürler, {patientName}!</h2>
+             <h2 className="text-4xl font-serif font-bold text-ink-dark mb-4">Teşekkürler, {formatNameTR(patientName)}!</h2>
              <p className="text-ink-light text-lg max-w-md mx-auto mb-12">
                Cevaplarınız güvenli bir şekilde kaydedildi ve Gökçe Hanım'a iletildi.
              </p>

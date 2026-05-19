@@ -17,8 +17,10 @@ export default function Contact() {
   const t = useTranslations('Contact');
   const locale = useLocale();
   
-  // KVKK Onay Durumunu Tutan "State"
   const [isKvkkAccepted, setIsKvkkAccepted] = useState(false);
+  const [isFormAccepted, setIsFormAccepted] = useState(false);
+
+  const isReadyToBook = isKvkkAccepted && isFormAccepted;
 
   return (
     <section id="contact" className="py-20 lg:py-28 bg-white">
@@ -37,17 +39,23 @@ export default function Contact() {
               <h3 className="text-2xl font-bold text-ink-dark mb-6">{t('infoTitle')}</h3>
               
               <div className="space-y-6">
+                {/* TELEFON */}
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center flex-shrink-0"><Phone className="w-5 h-5 text-sage-700" /></div>
                   <div>
                     <p className="text-sm font-medium text-ink-light mb-2">{t('phone')}</p>
                     <div className="space-y-3">
-                      <a href="tel:+908504304623" className="flex items-center gap-3 text-lg text-ink-dark hover:text-sage-500 transition-colors"><span className="text-xs px-2 py-1 rounded bg-white border border-sand-500/50 text-ink-light font-bold tracking-wide">TR</span>0850 430 46 23</a>
-                      <a href="tel:+17725322880" className="flex items-center gap-3 text-lg text-ink-dark hover:text-sage-500 transition-colors"><span className="text-xs px-2 py-1 rounded bg-white border border-sand-500/50 text-ink-light font-bold tracking-wide">USA</span>+1 772 532 28 80</a>
+                      <a href="tel:+908504304623" className="flex items-center gap-3 text-lg text-ink-dark hover:text-sage-500 transition-colors">
+                        <span className="text-xs px-2 py-1 rounded bg-white border border-sand-500/50 text-ink-light font-bold tracking-wide">TR</span> 0850 430 46 23
+                      </a>
+                      <a href="tel:+17725322880" className="flex items-center gap-3 text-lg text-ink-dark hover:text-sage-500 transition-colors">
+                        <span className="text-xs px-2 py-1 rounded bg-white border border-sand-500/50 text-ink-light font-bold tracking-wide">USA</span> +1 772 532 28 80
+                      </a>
                     </div>
                   </div>
                 </div>
 
+                {/* E-POSTA */}
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center flex-shrink-0"><Mail className="w-5 h-5 text-sage-700" /></div>
                   <div>
@@ -56,6 +64,7 @@ export default function Contact() {
                   </div>
                 </div>
 
+                {/* INSTAGRAM */}
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center flex-shrink-0"><InstagramIcon className="w-5 h-5 text-sage-700" /></div>
                   <div>
@@ -64,6 +73,7 @@ export default function Contact() {
                   </div>
                 </div>
 
+                {/* LINKEDIN */}
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center flex-shrink-0"><LinkedinIcon className="w-5 h-5 text-sage-700" /></div>
                   <div>
@@ -72,11 +82,12 @@ export default function Contact() {
                   </div>
                 </div>
 
+                {/* LOKASYON */}
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center flex-shrink-0"><MapPin className="w-5 h-5 text-sage-700" /></div>
                   <div>
                     <p className="text-sm font-medium text-ink-light mb-1">{t('location')}</p>
-                    <p className="text-lg text-ink-dark">{t('locationDesc1')}<br/><span className="text-base text-ink-light">{t('locationDesc2')}</span></p>
+                    <p className="text-lg text-ink-dark">Online Terapi (Global)<br/><span className="text-base text-ink-light">Google Meet</span></p>
                   </div>
                 </div>
               </div>
@@ -85,8 +96,6 @@ export default function Contact() {
 
           {/* Calendly Takvim Alanı */}
           <div id="booking" className="bg-white rounded-3xl border border-sand-500/30 shadow-lg overflow-hidden flex flex-col h-full min-h-[600px]">
-            
-            {/* Üst Kısım ve KVKK Kutusu */}
             <div className="p-6 md:p-8 border-b border-sand-500/20 bg-sand-50">
               <h3 className="text-2xl font-bold text-ink-dark flex items-center gap-2">
                 <Calendar className="w-6 h-6 text-sage-500" />
@@ -94,51 +103,43 @@ export default function Contact() {
               </h3>
               <p className="text-ink-light mt-2 mb-6">{t('calendarDesc')}</p>
 
-              {/* Checkbox (Onay Kutusu) */}
-              <div className="flex items-start gap-3 bg-white p-4 rounded-xl border border-sand-500/30 shadow-sm transition-colors hover:border-sage-500/40">
-                <div className="pt-0.5">
-                  <input
-                    type="checkbox"
-                    id="kvkk-checkbox"
-                    checked={isKvkkAccepted}
-                    onChange={(e) => setIsKvkkAccepted(e.target.checked)}
-                    className="w-5 h-5 accent-sage-600 rounded cursor-pointer"
-                  />
+              {/* ÇİFTE ONAY KUTULARI */}
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 bg-white p-3 rounded-xl border border-sand-500/30 shadow-sm transition-colors hover:border-sage-500/40">
+                  <input type="checkbox" id="kvkk" checked={isKvkkAccepted} onChange={(e) => setIsKvkkAccepted(e.target.checked)} className="w-5 h-5 mt-0.5 accent-sage-600 cursor-pointer" />
+                  <label htmlFor="kvkk" className="text-sm text-ink-dark cursor-pointer">
+                    <Link href={`/${locale}/kvkk`} target="_blank" className="text-sage-600 font-bold hover:underline">KVKK Aydınlatma Metni</Link>{t('kvkkCheck')}
+                  </label>
                 </div>
-                <label htmlFor="kvkk-checkbox" className="text-sm text-ink-dark cursor-pointer select-none leading-relaxed">
-                  <Link href={`/${locale}/kvkk`} target="_blank" className="text-sage-600 font-bold hover:underline">
-                    KVKK Aydınlatma Metni
-                  </Link>
-                  {t('kvkkCheck')}
-                </label>
+                
+                <div className="flex items-start gap-3 bg-white p-3 rounded-xl border border-sand-500/30 shadow-sm transition-colors hover:border-sage-500/40">
+                  <input type="checkbox" id="form" checked={isFormAccepted} onChange={(e) => setIsFormAccepted(e.target.checked)} className="w-5 h-5 mt-0.5 accent-sage-600 cursor-pointer" />
+                  <label htmlFor="form" className="text-sm text-ink-dark cursor-pointer">
+                    <Link href={`/${locale}/bilgilendirme-formu`} target="_blank" className="text-sage-600 font-bold hover:underline">Bilgilendirme Formu</Link>{t('formCheck')}
+                  </label>
+                </div>
               </div>
             </div>
 
-            {/* Takvimin Kendisi ve Bulanık Katman */}
             <div className="flex-grow w-full h-full relative bg-white overflow-hidden">
-              
-              {/* Takvim Gizliyken Çıkan Uyarı Katmanı */}
-              {!isKvkkAccepted && (
-                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-8 text-center bg-white/70 backdrop-blur-sm transition-all duration-300">
+              {!isReadyToBook && (
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-8 text-center bg-white/80 backdrop-blur-sm transition-all duration-300">
                    <Calendar className="w-12 h-12 text-sage-600/60 mb-4" />
                    <p className="text-lg font-bold text-ink-dark mb-2">{t('kvkkRequiredTitle')}</p>
                    <p className="text-sm text-ink-dark/70 max-w-sm">{t('kvkkRequiredDesc')}</p>
                 </div>
               )}
 
-              {/* Calendly iframe */}
               <iframe
                 src="https://calendly.com/uzmpskgokce/30min"
                 width="100%"
                 height="100%"
                 frameBorder="0"
                 title="Calendly Randevu Takvimi"
-                className={`w-full h-full min-h-[500px] transition-all duration-500 ${isKvkkAccepted ? 'opacity-100' : 'opacity-20 pointer-events-none'}`}
+                className={`w-full h-full min-h-[500px] transition-all duration-500 ${isReadyToBook ? 'opacity-100' : 'opacity-20 pointer-events-none'}`}
               ></iframe>
-
             </div>
           </div>
-
         </div>
       </div>
     </section>

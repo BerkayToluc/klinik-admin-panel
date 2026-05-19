@@ -1,12 +1,16 @@
 {
   "Navbar": {
-    "about": "About",
-    "services": "Services",
-    "scales": "Scales",
-    "contact": "Contact",
-    "faq": "FAQ",
-    "book": "Book Session"
-  },
+  "about": "About",
+  "services": "Services",
+  "scales": "Scales & Forms",
+  "clinicalScales": "Clinical Scales",
+  "clinicalScalesDesc": "Online Tests",
+  "forms": "Information Forms",
+  "formsDesc": "PDF Documents",
+  "contact": "Contact",
+  "faq": "FAQ",
+  "book": "Book Session"
+},
   "Hero": {
     "badge": "Clinical Psychologist & Psychotherapist",
     "title1": "A Safe Space For",
@@ -84,9 +88,10 @@
     "calendarDesc": "Schedule our session by choosing the most suitable time.",
     "calendarPlaceholder": "Loading Calendar...",
     "calendarPlaceholderDesc": "Your Calendly link will be embedded here.",
-    "kvkkCheck": "I have read and agree to the Privacy Policy.",
+    "kvkkCheck": " I have read and agree to the Privacy Policy.",
+    "formCheck": " I have read and agree to the Informed Consent Form.",
     "kvkkRequiredTitle": "Approval Required",
-    "kvkkRequiredDesc": "Please check the box above to accept the privacy policy and view the calendar."
+    "kvkkRequiredDesc": "Please check both boxes above to view the calendar."
   },
   "Footer": {
     "slogan": "Clinical Psychologist & Psychotherapist.",
