@@ -68,8 +68,22 @@ export default function Footer() {
 
         </div>
 
+        {/* ALT BİLGİ VE GELİŞTİRİCİ İMZASI */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-sand-50/60">&copy; {currentYear} {t('copyright')}</p>
+          
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-center md:text-left text-sm text-sand-50/60">
+            <p>&copy; {currentYear} {t('copyright')}</p>
+            <span className="hidden md:inline text-white/20">|</span>
+            <a 
+              href="https://www.linkedin.com/in/berkay-tolu%C3%A7-20b8442b2/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-white transition-colors group flex items-center gap-1"
+            >
+              {t('developer')}
+            </a>
+          </div>
+
           <div className="flex gap-6 text-sm text-sand-50/60">
             <Link href={`/${locale}/kvkk`} className="hover:text-white transition-colors">
               {t('privacy')}
